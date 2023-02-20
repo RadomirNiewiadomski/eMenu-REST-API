@@ -1,8 +1,13 @@
 """
 Tests for models.
 """
+import datetime
+from decimal import Decimal
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+
+from core import models
 
 
 class ModelTest(TestCase):
@@ -26,7 +31,7 @@ class ModelTest(TestCase):
             ['test1@EXAMPLE.com', 'test1@example.com'],
             ['Test2@Example.com', 'Test2@example.com'],
             ['TEST3@EXAMPLE.COM', 'TEST3@example.com'],
-            ['test4@example.COM', 'test4@example.com']
+            ['test4@example.COM', 'test4@example.com'],
         ]
         for email, expected_email in sample_emails:
             user = get_user_model().objects.create_user(email, 'sample123')
@@ -46,3 +51,21 @@ class ModelTest(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_menu(self):
+        """Test creating a menu is successful."""
+        menu = models.Menu.objects.create(
+            title='Some cuisine',
+            # dishes='Some dishes',
+        )
+
+        self.assertEqual(str(menu), menu.title)
+
+    def test_create_dish(self):
+        """Test creating a dish is successful."""
+        menu = models.Menu.objects.create(
+            title='Some cuisine',
+            # dishes='Some dishes',
+        )
+
+        self.assertEqual(str(menu), menu.title)

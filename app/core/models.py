@@ -1,12 +1,14 @@
 """
 Database models.
 """
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    PermissionsMixin
+    PermissionsMixin,
 )
+from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
@@ -42,3 +44,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Dish(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    time_minutes = models.IntegerField()
+    vegetarian = models.BooleanField()
+
+    def __str__(self):
+        return self.title
+
+
+class Menu(models.Model):
+    """Menu object."""
+    title = models.CharField(_("Menu title"), unique=True, max_length=255)
+    description = models.TextField(blank=True)
+    dishes = models.ManyToManyField(Dish)
+
+    def __str__(self):
+        return self.title
