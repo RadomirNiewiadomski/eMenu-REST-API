@@ -2,8 +2,6 @@
 Tests for menu API.
 """
 from decimal import Decimal
-import tempfile
-import os
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -19,8 +17,7 @@ from core.models import (
 
 from menu.serializers import (
     MenuSerializer,
-    DishSerializer,
-    MenuDetailSerializer
+    MenuDetailSerializer,
 )
 
 
@@ -107,18 +104,18 @@ class PrivateRecipeAPITests(TestCase):
         )
         self.client.force_authenticate(user=self.user)
 
-    # def test_create_menu(self):
-    #     """Test creating a menu - private."""
-    #     payload = {
-    #         'title': 'Sample menu',
-    #         'description': "Sample description"
-    #     }
-    #     res = self.client.post(MENU_URL, payload)
+    def test_create_menu(self):
+        """Test creating a menu - private."""
+        payload = {
+            'title': 'Sample menu',
+            'description': "Sample description"
+        }
+        res = self.client.post(MENU_URL, payload)
 
-    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-    #     recipe = Menu.objects.get(id=res.data['id'])
-    #     for k, v in payload.items():
-    #         self.assertEqual(getattr(recipe, k), v)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        recipe = Menu.objects.get(id=res.data['id'])
+        for k, v in payload.items():
+            self.assertEqual(getattr(recipe, k), v)
 
     def test_partial_update(self):
         """Test partial update of a menu - private."""
@@ -137,23 +134,23 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(menu.title, payload['title'])
         self.assertEqual(menu.description, original_description)
 
-    # def test_full_update(self):
-    #     """Test full update of a menu - private."""
-    #     menu = create_menu(
-    #         title='Sample recipe title',
-    #         description='Sample recipe description',
-    #     )
-    #     payload = {
-    #         'title': 'New recipe title',
-    #         'description': 'New recipe description',
-    #     }
-    #     url = detail_url(menu.id)
-    #     res = self.client.put(url, payload)
+    def test_full_update(self):
+        """Test full update of a menu - private."""
+        menu = create_menu(
+            title='Sample recipe title',
+            description='Sample recipe description',
+        )
+        payload = {
+            'title': 'New recipe title',
+            'description': 'New recipe description',
+        }
+        url = detail_url(menu.id)
+        res = self.client.put(url, payload)
 
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-    #     menu.refresh_from_db()
-    #     for k, v in payload.items():
-    #         self.assertEqual(getattr(menu, k), v)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        menu.refresh_from_db()
+        for k, v in payload.items():
+            self.assertEqual(getattr(menu, k), v)
 
     def test_delete_menu(self):
         """Test deleting a menu successful - private."""
@@ -165,15 +162,15 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Menu.objects.filter(id=menu.id).exists())
 
-    # def test_clear_dishes_from_menu(self):
-    #     """Test clearing dishes from menu - private."""
-    #     dish = create_dish()
-    #     menu = create_menu()
-    #     menu.dishes.add(dish)
+    def test_clear_dishes_from_menu(self):
+        """Test clearing dishes from menu - private."""
+        dish = create_dish()
+        menu = create_menu()
+        menu.dishes.add(dish)
 
-    #     payload = {'dishes': []}
-    #     url = detail_url(menu.id)
-    #     res = self.client.patch(url, payload, format='json')
+        payload = {'dishes': []}
+        url = detail_url(menu.id)
+        res = self.client.patch(url, payload, format='json')
 
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(menu.dishes.count(), 0)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(menu.dishes.count(), 0)

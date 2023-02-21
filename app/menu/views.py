@@ -1,20 +1,12 @@
 """
 Views for the menu API.
 """
-from rest_framework import (
-    viewsets,
-    mixins,
-    status,
-)
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.models import (
-    Menu,
-    Dish,
-)
+from core.models import Menu, Dish
+
 from menu import serializers
 
 
@@ -52,7 +44,3 @@ class DishViewSet(viewsets.ModelViewSet):
         """Retrieve list of dishes."""
 
         return self.queryset.all().order_by('-id')
-
-    def perform_create(self, serializer):
-        """Create a new dish."""
-        serializer.save()
