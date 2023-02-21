@@ -56,16 +56,18 @@ class ModelTest(TestCase):
         """Test creating a menu is successful."""
         menu = models.Menu.objects.create(
             title='Some cuisine',
-            # dishes='Some dishes',
         )
 
         self.assertEqual(str(menu), menu.title)
 
     def test_create_dish(self):
         """Test creating a dish is successful."""
-        menu = models.Menu.objects.create(
+        dish = models.Dish.objects.create(
             title='Some cuisine',
-            # dishes='Some dishes',
+            description='Some description',
+            time_minutes='15',
+            price=Decimal('2.50'),
+            vegetarian=False,
         )
 
-        self.assertEqual(str(menu), menu.title)
+        self.assertEqual(str(dish), dish.title)
