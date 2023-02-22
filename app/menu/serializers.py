@@ -29,9 +29,7 @@ class MenuSerializer(serializers.ModelSerializer):
     def _get_or_create_dishes(self, dishes, menu):
         """Handle getting or creating dishes as needed."""
         for dish in dishes:
-            dish_obj, created = Dish.objects.get_or_create(
-                **dish
-            )
+            dish_obj, created = Dish.objects.get_or_create(**dish)
             menu.dishes.add(dish_obj)
 
     def create(self, validated_data):

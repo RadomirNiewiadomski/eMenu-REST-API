@@ -1,7 +1,6 @@
 """
 Database models.
 """
-from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -47,11 +46,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Dish(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
-    time_minutes = models.IntegerField()
-    vegetarian = models.BooleanField()
+    title = models.CharField(_('Title'), max_length=255)
+    description = models.TextField(_('Description'), blank=True)
+    price = models.DecimalField(_('Price'), max_digits=5, decimal_places=2)
+    time_minutes = models.IntegerField(_('Preparation time in min'))
+    vegetarian = models.BooleanField(_('Is vegetarian'))
+
+    class Meta:
+        verbose_name = _("Dish")
+        verbose_name_plural = _("Dishes")
 
     def __str__(self):
         return self.title
@@ -59,9 +62,13 @@ class Dish(models.Model):
 
 class Menu(models.Model):
     """Menu object."""
-    title = models.CharField(_("Menu title"), unique=True, max_length=255)
-    description = models.TextField(blank=True)
-    dishes = models.ManyToManyField(Dish)
+    title = models.CharField(_('Menu title'), unique=True, max_length=255)
+    description = models.TextField(_('Description'), blank=True)
+    dishes = models.ManyToManyField(Dish, verbose_name=_('Dish'))
+
+    class Meta:
+        verbose_name = _("Menu")
+        verbose_name_plural = _("Menus")
 
     def __str__(self):
         return self.title

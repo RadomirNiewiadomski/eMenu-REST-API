@@ -83,7 +83,7 @@ class PublicMenuApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_auth_required(self):
-        """Test auth is required for POST method."""
+        """Test auth is required (for POST method)."""
         payload = {
             'title': 'Sample menu',
             'description': "Sample description"
@@ -93,7 +93,7 @@ class PublicMenuApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeAPITests(TestCase):
+class PrivateMenuApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
@@ -113,13 +113,13 @@ class PrivateRecipeAPITests(TestCase):
         res = self.client.post(MENU_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        recipe = Menu.objects.get(id=res.data['id'])
+        menu = Menu.objects.get(id=res.data['id'])
         for k, v in payload.items():
-            self.assertEqual(getattr(recipe, k), v)
+            self.assertEqual(getattr(menu, k), v)
 
     def test_partial_update(self):
         """Test partial update of a menu - private."""
-        original_description = 'Sample recipe title'
+        original_description = 'Sample menu title'
         menu = create_menu(
             title='Old menu title',
             description=original_description,
@@ -137,12 +137,12 @@ class PrivateRecipeAPITests(TestCase):
     def test_full_update(self):
         """Test full update of a menu - private."""
         menu = create_menu(
-            title='Sample recipe title',
-            description='Sample recipe description',
+            title='Sample menu title',
+            description='Sample menu description',
         )
         payload = {
-            'title': 'New recipe title',
-            'description': 'New recipe description',
+            'title': 'New menu title',
+            'description': 'New menu description',
         }
         url = detail_url(menu.id)
         res = self.client.put(url, payload)
@@ -161,6 +161,113 @@ class PrivateRecipeAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Menu.objects.filter(id=menu.id).exists())
+
+    def test_create_menu_with_new_dishes(self):
+        """Test creating menu with new dishes - private."""
+        payload = {
+            'title': 'Menu card 1',
+            'dishes': [
+                {
+                    'title': 'Some dish1',
+                    'price': Decimal('5.00'),
+                    'time_minutes': 30,
+                    'vegetarian': False,
+                },
+                {
+                    'title': 'Some dish2',
+                    'price': Decimal('7.00'),
+                    'time_minutes': 20,
+                    'vegetarian': True,
+                }]
+        }
+        res = self.client.post(MENU_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        menus = Menu.objects.all()
+        self.assertEqual(menus.count(), 1)
+        menu = menus[0]
+        self.assertEqual(menu.dishes.count(), 2)
+        for dish in payload['dishes']:
+            exists = menu.dishes.filter(
+                title=dish['title'],
+                price=dish['price'],
+                time_minutes=dish['time_minutes'],
+                vegetarian=dish['vegetarian'],
+            ).exists()
+            self.assertTrue(exists)
+
+    def test_create_menu_with_existing_dish(self):
+        """Test creating menu with existing dish - private."""
+        dish_meatballs = create_dish(
+            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+        payload = {
+            'title': 'Menu card 1',
+            'dishes': [
+                {
+                    'title': 'Meatballs',
+                    'price': Decimal('6.50'),
+                    'time_minutes': 30,
+                    'vegetarian': False,
+                },
+                {
+                    'title': 'Some dish2',
+                    'price': Decimal('7.00'),
+                    'time_minutes': 20,
+                    'vegetarian': True,
+                }]
+        }
+        res = self.client.post(MENU_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        menus = Menu.objects.all()
+        self.assertEqual(menus.count(), 1)
+        menu = menus[0]
+        self.assertEqual(menu.dishes.count(), 2)
+        self.assertIn(dish_meatballs, menu.dishes.all())
+        for dish in payload['dishes']:
+            exists = menu.dishes.filter(
+                title=dish['title'],
+                price=dish['price'],
+                time_minutes=dish['time_minutes'],
+                vegetarian=dish['vegetarian'],
+            ).exists()
+            self.assertTrue(exists)
+        self.assertTrue(Dish.objects.all(), 2)
+
+    def test_create_dish_on_update(self):
+        """Test creating dish when updating a menu - private."""
+        menu = create_menu()
+
+        payload = {'dishes': [{
+            'title': 'Some dish1',
+            'price': Decimal('5.00'),
+            'time_minutes': 30,
+            'vegetarian': False,
+        }]}
+        url = detail_url(menu.id)
+        res = self.client.patch(url, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        new_dish = Dish.objects.get(title='Some dish1')
+        self.assertIn(new_dish, menu.dishes.all())
+
+    def test_update_menu_assign_dish(self):
+        """Test assigning an existing dish when updating a menu - private."""
+        dish_meatballs = create_dish(
+            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+        menu = create_menu()
+        menu.dishes.add(dish_meatballs)
+
+        dish_spaghetti = create_dish(
+            title='Spaghetti', price=Decimal('8.00'), time_minutes=40, vegetarian=False)
+        payload = {'dishes': [{'title': 'Spaghetti', 'price': Decimal(
+            '8.00'), 'time_minutes': 40, 'vegetarian': False}]}
+        url = detail_url(menu.id)
+        res = self.client.patch(url, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn(dish_spaghetti, menu.dishes.all())
+        self.assertNotIn(dish_meatballs, menu.dishes.all())
 
     def test_clear_dishes_from_menu(self):
         """Test clearing dishes from menu - private."""
