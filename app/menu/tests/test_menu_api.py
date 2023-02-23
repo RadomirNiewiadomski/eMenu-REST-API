@@ -61,16 +61,24 @@ class PublicMenuApiTests(TestCase):
         self.client = APIClient()
 
     def test_retrieve_menus_list(self):
-        """Test retrieving a list of menus - public."""
-        create_menu()
-        create_menu(title='Some cuisine 2')
+        """Test retrieving a list of not empty menus - public."""
+        m1 = create_menu(title='Some cuisine 1')
+        m2 = create_menu(title='Some cuisine 2')
+        m3 = create_menu(title='Some cuisine 3')
+        dish = create_dish()
+        m1.dishes.add(dish)
+        m2.dishes.add(dish)
 
         res = self.client.get(MENU_URL)
 
         menus = Menu.objects.all().order_by('-id')
-        serializer = MenuSerializer(menus, many=True)
+        s1 = MenuSerializer(m1)
+        s2 = MenuSerializer(m2)
+        s3 = MenuSerializer(m3)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertIn(s1.data, res.data)
+        self.assertIn(s2.data, res.data)
+        self.assertNotIn(s3.data, res.data)
 
     def test_get_menu_detail(self):
         """Test get menu detail - public."""

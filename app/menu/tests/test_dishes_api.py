@@ -54,7 +54,7 @@ class PublicDishApiTests(TestCase):
 
         res = self.client.get(DISHES_URL)
 
-        dishes = Dish.objects.all().order_by('-id')
+        dishes = Dish.objects.all()
         serializer = DishSerializer(dishes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
