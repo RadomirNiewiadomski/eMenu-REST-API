@@ -20,10 +20,13 @@ class DishSerializer(serializers.ModelSerializer):
 
 class MenuSerializer(serializers.ModelSerializer):
     """Serializer for menu."""
+    dishes = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Dish.objects.all())
 
     class Meta:
         model = Menu
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'description', 'dishes',
+                  'created_date', 'modified_date']
         read_only_fields = ['id']
 
     def _get_or_create_dishes(self, dishes, menu):
@@ -57,6 +60,3 @@ class MenuSerializer(serializers.ModelSerializer):
 class MenuDetailSerializer(MenuSerializer):
     """Serializer for menu detail view."""
     dishes = DishSerializer(many=True, required=False)
-
-    class Meta(MenuSerializer.Meta):
-        fields = MenuSerializer.Meta.fields + ['description', 'dishes']

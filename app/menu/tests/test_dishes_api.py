@@ -46,7 +46,11 @@ class PublicDishApiTests(TestCase):
         """Test retrieving a list of dishes - public."""
         create_dish()
         create_dish(
-            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+            title='Meatballs',
+            price=Decimal('6.50'),
+            time_minutes=30,
+            vegetarian=False
+        )
 
         res = self.client.get(DISHES_URL)
 
@@ -107,7 +111,11 @@ class PrivateRecipeAPITests(TestCase):
     def test_update_dish(self):
         """Test updating a dish - private."""
         dish = create_dish(
-            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+            title='Meatballs',
+            price=Decimal('6.50'),
+            time_minutes=30,
+            vegetarian=False
+        )
 
         payload = {
             'title': 'Some dish1',
@@ -125,7 +133,11 @@ class PrivateRecipeAPITests(TestCase):
     def test_delete_dish(self):
         """Test deleting a dish."""
         dish = create_dish(
-            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+            title='Meatballs',
+            price=Decimal('6.50'),
+            time_minutes=30,
+            vegetarian=False
+        )
 
         url = detail_url(dish.id)
         res = self.client.delete(url)

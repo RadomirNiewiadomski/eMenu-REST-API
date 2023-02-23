@@ -199,7 +199,11 @@ class PrivateMenuApiTests(TestCase):
     def test_create_menu_with_existing_dish(self):
         """Test creating menu with existing dish - private."""
         dish_meatballs = create_dish(
-            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+            title='Meatballs',
+            price=Decimal('6.50'),
+            time_minutes=30,
+            vegetarian=False
+        )
         payload = {
             'title': 'Menu card 1',
             'dishes': [
@@ -254,12 +258,20 @@ class PrivateMenuApiTests(TestCase):
     def test_update_menu_assign_dish(self):
         """Test assigning an existing dish when updating a menu - private."""
         dish_meatballs = create_dish(
-            title='Meatballs', price=Decimal('6.50'), time_minutes=30, vegetarian=False)
+            title='Meatballs',
+            price=Decimal('6.50'),
+            time_minutes=30,
+            vegetarian=False
+        )
         menu = create_menu()
         menu.dishes.add(dish_meatballs)
 
         dish_spaghetti = create_dish(
-            title='Spaghetti', price=Decimal('8.00'), time_minutes=40, vegetarian=False)
+            title='Spaghetti',
+            price=Decimal('8.00'),
+            time_minutes=40,
+            vegetarian=False
+        )
         payload = {'dishes': [{'title': 'Spaghetti', 'price': Decimal(
             '8.00'), 'time_minutes': 40, 'vegetarian': False}]}
         url = detail_url(menu.id)

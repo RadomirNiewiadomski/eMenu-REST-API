@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -51,6 +52,8 @@ class Dish(models.Model):
     price = models.DecimalField(_('Price'), max_digits=5, decimal_places=2)
     time_minutes = models.IntegerField(_('Preparation time in min'))
     vegetarian = models.BooleanField(_('Is vegetarian'))
+    created_date = models.DateField(_('Created'), auto_now_add=True)
+    modified_date = models.DateField(_('Modified'), auto_now=True, blank=True)
 
     class Meta:
         verbose_name = _("Dish")
@@ -65,6 +68,8 @@ class Menu(models.Model):
     title = models.CharField(_('Menu title'), unique=True, max_length=255)
     description = models.TextField(_('Description'), blank=True)
     dishes = models.ManyToManyField(Dish, verbose_name=_('Dish'))
+    created_date = models.DateField(_('Created'), auto_now_add=True)
+    modified_date = models.DateField(_('Modified'), auto_now=True, blank=True)
 
     class Meta:
         verbose_name = _("Menu")
