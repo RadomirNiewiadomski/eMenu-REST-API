@@ -71,7 +71,6 @@ class PublicMenuApiTests(TestCase):
 
         res = self.client.get(MENU_URL)
 
-        menus = Menu.objects.all().order_by('-id')
         s1 = MenuSerializer(m1)
         s2 = MenuSerializer(m2)
         s3 = MenuSerializer(m3)

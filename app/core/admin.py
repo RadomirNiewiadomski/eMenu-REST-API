@@ -44,6 +44,11 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class MenuAdmin(admin.ModelAdmin):
+    list_filter = ['title', 'created_date', 'modified_date']
+    list_display = ['title']
+
+
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Menu)
+admin.site.register(models.Menu, MenuAdmin)
 admin.site.register(models.Dish)

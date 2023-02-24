@@ -60,3 +60,13 @@ class MenuSerializer(serializers.ModelSerializer):
 class MenuDetailSerializer(MenuSerializer):
     """Serializer for menu detail view."""
     dishes = DishSerializer(many=True, required=False)
+
+
+class DishImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to dishes."""
+
+    class Meta:
+        model = Dish
+        fields = ['id', 'image']
+        read_only_fields = ['id']
+        extra_kwargs = {'image': {'required': 'True'}}
