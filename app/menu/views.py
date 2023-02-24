@@ -58,14 +58,21 @@ class MenuViewSet(viewsets.ModelViewSet):
             modified_date = self.request.query_params.get('modified_date')
             if title:
                 self.queryset = self.queryset.filter(title=title)
-            if created_date:
+            elif created_date:
                 self.queryset = self.queryset.filter(
                     created_date__gte=created_date)
-            if modified_date:
+            elif modified_date:
                 self.queryset = self.queryset.filter(
                     modified_date__gte=modified_date)
 
-        return self.queryset.order_by('title').distinct()
+        # sort_by_description = self.request.query_params.get('description')
+        # sort_by_title = self.request.query_params.get('title')
+        # if sort_by_description:
+        #     return self.queryset.order_by('description')
+        # elif sort_by_title:
+        #     return self.queryset.order_by('title')
+
+        return self.queryset.order_by('id').distinct()
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -73,10 +80,6 @@ class MenuViewSet(viewsets.ModelViewSet):
             return serializers.MenuSerializer
 
         return self.serializer_class
-
-    def perform_create(self, serializer):
-        """Create a new menu."""
-        serializer.save()
 
 
 class DishViewSet(viewsets.ModelViewSet):
