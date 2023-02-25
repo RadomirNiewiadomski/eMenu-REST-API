@@ -243,7 +243,6 @@ class PrivateMenuApiTests(TestCase):
                 vegetarian=dish['vegetarian'],
             ).exists()
             self.assertTrue(exists)
-        self.assertTrue(Dish.objects.all(), 2)
 
     def test_create_dish_on_update(self):
         """Test creating dish when updating a menu - private."""

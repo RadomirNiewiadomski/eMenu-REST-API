@@ -22,7 +22,8 @@ class DishSerializer(serializers.ModelSerializer):
                   'vegetarian',
                   'image',
                   'created_date',
-                  'modified_date',]
+                  'modified_date',
+                  ]
         read_only_fields = ['id']
 
 
