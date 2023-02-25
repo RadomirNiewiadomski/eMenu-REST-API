@@ -64,7 +64,8 @@ class Dish(models.Model):
     vegetarian = models.BooleanField(_('Is vegetarian'))
     created_date = models.DateField(_('Created'), auto_now_add=True)
     modified_date = models.DateField(_('Modified'), auto_now=True, blank=True)
-    image = models.ImageField(null=True, upload_to=dish_image_file_path)
+    image = models.ImageField(null=True, blank=True,
+                              upload_to=dish_image_file_path)
 
     class Meta:
         verbose_name = _("Dish")

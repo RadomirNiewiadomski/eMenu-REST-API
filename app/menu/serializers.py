@@ -14,8 +14,15 @@ class DishSerializer(serializers.ModelSerializer):
 
     class Meta():
         model = Dish
-        fields = ['id', 'title', 'description', 'price',
-                  'time_minutes', 'created_date', 'modified_date', 'vegetarian']
+        fields = ['id',
+                  'title',
+                  'description',
+                  'price',
+                  'time_minutes',
+                  'vegetarian',
+                  'image',
+                  'created_date',
+                  'modified_date',]
         read_only_fields = ['id']
 
 

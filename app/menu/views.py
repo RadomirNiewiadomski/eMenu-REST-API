@@ -1,78 +1,38 @@
 """
 Views for the menu API.
 """
-from drf_spectacular.utils import (
-    extend_schema_view,
-    extend_schema,
-    OpenApiParameter,
-    OpenApiTypes
-)
+from django.db.models import Count
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.filters import OrderingFilter
 
+from django_filters import rest_framework as filters
+
+from .filters import MenuFilter
 from core.models import Menu, Dish
 
 from menu import serializers
 
 
-@extend_schema_view(
-    list=extend_schema(
-        parameters=[
-            OpenApiParameter(
-                'title',
-                OpenApiTypes.STR,
-                description='Filter menus by title',
-            ),
-            OpenApiParameter(
-                'created_date',
-                OpenApiTypes.DATE,
-                description='Filter menus created from date',
-            ),
-            OpenApiParameter(
-                'modified_date',
-                OpenApiTypes.DATE,
-                description='Filter menus modified from date',
-            ),
-        ]
-    )
-)
 class MenuViewSet(viewsets.ModelViewSet):
     """View for manage menu APIs."""
-    dishes = Dish.objects.all()
     serializer_class = serializers.MenuDetailSerializer
-    queryset = Menu.objects.all().order_by('title')
+    queryset = Menu.objects.all().annotate(dish_count=Count('dishes'))
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filterset_class = MenuFilter
+    ordering_fields = ['title', 'dish_count']
 
     def get_queryset(self):
         if self.action == 'list':
-            self.queryset = Menu.objects.filter(
-                dishes__in=self.dishes).distinct()
-            # filtering:
-            title = self.request.query_params.get('title')
-            created_date = self.request.query_params.get('created_date')
-            modified_date = self.request.query_params.get('modified_date')
-            if title:
-                self.queryset = self.queryset.filter(title=title)
-            elif created_date:
-                self.queryset = self.queryset.filter(
-                    created_date__gte=created_date)
-            elif modified_date:
-                self.queryset = self.queryset.filter(
-                    modified_date__gte=modified_date)
+            return self.queryset.filter(dishes__isnull=False).distinct()
 
-        # sort_by_description = self.request.query_params.get('description')
-        # sort_by_title = self.request.query_params.get('title')
-        # if sort_by_description:
-        #     return self.queryset.order_by('description')
-        # elif sort_by_title:
-        #     return self.queryset.order_by('title')
-
-        return self.queryset.order_by('id').distinct()
+        return self.queryset
 
     def get_serializer_class(self):
         """Return serializer class for request."""
@@ -84,7 +44,7 @@ class MenuViewSet(viewsets.ModelViewSet):
 
 class DishViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.DishSerializer
-    queryset = Dish.objects.all()
+    queryset = Dish.objects.all().order_by('title')
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
