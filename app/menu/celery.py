@@ -1,5 +1,3 @@
-import logging
-
 from celery.schedules import crontab
 from celery.task import periodic_task
 
@@ -18,12 +16,15 @@ from core.models import Dish
 
 def send_mail_with_new_dishes(user, subject, message):
     send_mail(
-        subject=subject, message=message, from_email='menu_update_noreply@menu.dev',
+        subject=subject, message=message, from_email=EMAIL_HOST_USER,
         recipient_list=[user.email], fail_silently=False
     )
 
 
-@periodic_task(run_every=(crontab(minute=34, hour=15)), name="send_email_with_new_dishes", ignore_result=True)
+@periodic_task(run_every=(
+    crontab(minute=34, hour=15)),
+    name="send_email_with_new_dishes",
+    ignore_result=True)
 def assemble_email_with_new_dishes():
     """Assembling email with yesterdays updates."""
     yesterday = f"{now().day - 1}-{now().month}-{now().year}"
@@ -51,7 +52,7 @@ def assemble_email_with_new_dishes():
     else:
         message += """
             No new dishes were added (or modified) yesterday. \n
-            Expect next email tomorrow at the same time from us about todays updates. \n
+            Expect next email about todays updates tomorrow. \n
         """
 
     active_users = get_user_model().objects.filter(is_active=True)
