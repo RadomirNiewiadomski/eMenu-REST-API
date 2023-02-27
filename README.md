@@ -35,7 +35,7 @@ Design and implementation of an independent eMenu service, serving as an online 
 ### Technologies:
 - Python version: 3.9
 - Django version: 4.0.1
-- Django REST framework version: 3.12.4
+- Django REST framework version: 3.13.1
 - Docker version: 20.10.22
 - Others: see "requirements.txt
 
