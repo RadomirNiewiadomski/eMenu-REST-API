@@ -5,41 +5,17 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from django.utils.timezone import now, timedelta
 
-from core.models import (
-    Menu,
-    Dish,
-)
 
 from rest_framework.test import APITestCase
 
 from menu.serializers import MenuSerializer
 
+from menu.tests.creates import (
+    create_dish,
+    create_menu
+)
+
 MENU_URL = reverse('menu:menu-list')
-
-
-def create_menu(**params):
-    """Create and return a sample menu."""
-    defaults = {
-        'title': 'Some cuisine',
-    }
-    defaults.update(params)
-
-    menu = Menu.objects.create(**defaults)
-    return menu
-
-
-def create_dish(**params):
-    """Create and return a sample dish."""
-    defaults = {
-        'title': 'Some dish',
-        'price': Decimal('5.00'),
-        'time_minutes': 30,
-        'vegetarian': False,
-    }
-    defaults.update(params)
-
-    dish = Dish.objects.create(**defaults)
-    return dish
 
 
 class MenuApiFilterTests(APITestCase):

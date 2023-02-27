@@ -20,6 +20,11 @@ from menu.serializers import (
     MenuDetailSerializer,
 )
 
+from menu.tests.creates import (
+    create_dish,
+    create_menu
+)
+
 
 MENU_URL = reverse('menu:menu-list')
 
@@ -27,31 +32,6 @@ MENU_URL = reverse('menu:menu-list')
 def detail_url(menu_id):
     """Create and return a menu detail URL."""
     return reverse('menu:menu-detail', args=[menu_id])
-
-
-def create_menu(**params):
-    """Create and return a sample menu."""
-    defaults = {
-        'title': 'Some cuisine',
-    }
-    defaults.update(params)
-
-    menu = Menu.objects.create(**defaults)
-    return menu
-
-
-def create_dish(**params):
-    """Create and return a sample dish."""
-    defaults = {
-        'title': 'Some dish',
-        'price': Decimal('5.00'),
-        'time_minutes': 30,
-        'vegetarian': False,
-    }
-    defaults.update(params)
-
-    dish = Dish.objects.create(**defaults)
-    return dish
 
 
 class PublicMenuApiTests(TestCase):

@@ -18,6 +18,8 @@ from core.models import Dish
 
 from menu.serializers import DishSerializer
 
+from menu.tests.creates import create_dish
+
 DISHES_URL = reverse('menu:dish-list')
 
 
@@ -29,20 +31,6 @@ def detail_url(dish_id):
 def image_upload_url(dish_id):
     """Create and return an image upload URL."""
     return reverse('menu:dish-upload-image', args=[dish_id])
-
-
-def create_dish(**params):
-    """Create and return a sample dish."""
-    defaults = {
-        'title': 'Some dish',
-        'price': Decimal('5.00'),
-        'time_minutes': 30,
-        'vegetarian': False,
-    }
-    defaults.update(params)
-
-    dish = Dish.objects.create(**defaults)
-    return dish
 
 
 class PublicDishApiTests(TestCase):

@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -148,3 +148,18 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
+
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
+CELERY_TIMEZONE = 'Europe/Warsaw'
+CELERY_IMPORTS = ['menu.celery']
+
+# SMTP SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'emenu.newdish.noreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'deybwquxflswejwk'
+DEFAULT_FROM_EMAIL = '<emenu.newdish.noreply@gmail.com>'
