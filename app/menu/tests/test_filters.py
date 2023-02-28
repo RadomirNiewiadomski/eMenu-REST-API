@@ -35,9 +35,7 @@ class MenuApiFilterTests(APITestCase):
         self.dish3 = create_dish(title='Egg salad')
         self.dish4 = create_dish(title='Tomato soup')
         self.dish5 = create_dish(title='Margherita')
-        self.menu3.dishes.add(self.dish3)
-        self.menu3.dishes.add(self.dish4)
-        self.menu3.dishes.add(self.dish5)
+        self.menu3.dishes.add(self.dish3, self.dish4, self.dish5)
         self.s3 = MenuSerializer(self.menu3)
 
         self.menu4 = create_menu(title='Thursday menu')

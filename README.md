@@ -12,7 +12,7 @@ Design and implementation of an independent eMenu service, serving as an online 
 3. Each card can contain any number of dishes.
 4. Each dish should be characterized by: name, description, price, preparation time, date of create, date of update, information whether the dish is vegetarian and image of the dish.
 5. Each card is characterized by: name (unique), description, date of create, date of update.
-6. The API must be protected against unauthorized access (after user authorization).
+6. The API is protected against unauthorized access (after user authorization).
 
 #### Public API:
 
@@ -31,6 +31,7 @@ Design and implementation of an independent eMenu service, serving as an online 
 1. The application was made according to the TDD methodology.
 2. E-mail account used to send e-mail notifications updates: emenu.newdish.noreply@gmail.com
 3. Project was integrated with Github Actions.
+4. Authorization is accessible thru Token Authentication. 
 
 ### Technologies:
 - Python version: 3.9
@@ -52,7 +53,8 @@ API root:
 http://localhost:8000/api/menu/
 ```
 
-API documentation (swagger):
+API documentation - Swagger:
+(To access POST, PUT, PATCH, DELETE methods you need to provide Token Authentication.)
 ```
 http://localhost:8000/api/docs/
 ```
