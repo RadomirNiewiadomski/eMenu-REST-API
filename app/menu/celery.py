@@ -22,7 +22,7 @@ def send_mail_with_new_dishes(user, subject, message):
 
 
 @periodic_task(run_every=(
-    crontab(minute=34, hour=15)),
+    crontab(minute=0, hour=10)),
     name="send_email_with_new_dishes",
     ignore_result=True)
 def assemble_email_with_new_dishes():
