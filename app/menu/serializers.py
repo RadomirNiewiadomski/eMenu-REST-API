@@ -3,7 +3,7 @@ Serializers for menu API.
 """
 from rest_framework import serializers
 
-from core.models import (
+from menu.models import (
     Menu,
     Dish,
 )

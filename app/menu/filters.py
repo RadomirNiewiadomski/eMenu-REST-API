@@ -1,6 +1,6 @@
 from django_filters import CharFilter, DateFilter, FilterSet
 
-from core.models import Menu
+from menu.models import Menu
 
 
 class MenuFilter(FilterSet):

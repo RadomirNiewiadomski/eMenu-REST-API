@@ -7,7 +7,7 @@ from menu.tests.creates import (
     create_menu
 )
 
-from core.models import Menu
+from menu.models import Menu
 
 
 class Command(BaseCommand):

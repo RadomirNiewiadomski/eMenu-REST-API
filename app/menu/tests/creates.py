@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from core.models import (
+from menu.models import (
     Menu,
     Dish,
 )

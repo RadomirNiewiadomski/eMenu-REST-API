@@ -13,7 +13,7 @@ from rest_framework.filters import OrderingFilter
 from django_filters import rest_framework as filters
 
 from .filters import MenuFilter
-from core.models import Menu, Dish
+from menu.models import Menu, Dish
 
 from menu import serializers
 

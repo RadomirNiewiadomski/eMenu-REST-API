@@ -11,7 +11,7 @@ from django.utils.timezone import (
 
 from app.settings import EMAIL_HOST_USER
 
-from core.models import Dish
+from menu.models import Dish
 
 
 def send_mail_with_new_dishes(user, subject, message):
