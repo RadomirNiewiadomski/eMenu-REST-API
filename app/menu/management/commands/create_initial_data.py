@@ -1,12 +1,11 @@
+"""
+Command to create initial data.
+"""
 from decimal import Decimal
 
 from django.core.management.base import BaseCommand
 
-from menu.tests.creates import (
-    create_dish,
-    create_menu
-)
-
+from menu.tests.creates import create_dish, create_menu
 from menu.models import Menu
 
 

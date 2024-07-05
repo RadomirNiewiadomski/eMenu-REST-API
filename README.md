@@ -70,5 +70,12 @@ email: admin@menu.com
 password: pass1234
 ```
 
+#### Testing:
+
+To run tests:
+```
+docker-compose run --rm app sh -c "python manage.py test"
+```
+
 ## Created by:
 Radomir Niewiadomski

@@ -1,16 +1,13 @@
 """
 Tests for models.
 """
-from unittest.mock import patch
 from decimal import Decimal
+
+from unittest.mock import patch
 
 from django.test import TestCase
 
-from menu.models import (
-    Menu,
-    Dish,
-    dish_image_file_path,
-)
+from menu.models import Menu, Dish, dish_image_file_path
 
 
 class ModelTest(TestCase):

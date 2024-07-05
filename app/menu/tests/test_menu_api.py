@@ -10,20 +10,11 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from menu.models import (
-    Menu,
-    Dish,
-)
+from menu.models import Menu, Dish
 
-from menu.serializers import (
-    MenuSerializer,
-    MenuDetailSerializer,
-)
+from menu.serializers import MenuSerializer, MenuDetailSerializer
 
-from menu.tests.creates import (
-    create_dish,
-    create_menu
-)
+from menu.tests.creates import create_dish, create_menu
 
 
 MENU_URL = reverse('menu:menu-list')

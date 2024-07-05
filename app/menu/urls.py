@@ -1,11 +1,7 @@
 """
 URL mappings for the menu app.
 """
-from django.urls import (
-    path,
-    include,
-)
-
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from menu import views

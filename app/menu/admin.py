@@ -3,10 +3,7 @@ Django admin customization.
 """
 from django.contrib import admin
 
-from menu.models import (
-    Menu,
-    Dish,
-)
+from menu.models import Menu, Dish
 
 
 class MenuAdmin(admin.ModelAdmin):

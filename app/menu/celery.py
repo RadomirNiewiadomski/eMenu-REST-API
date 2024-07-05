@@ -4,13 +4,9 @@ from celery.task import periodic_task
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from django.utils.timezone import (
-    datetime,
-    now,
-)
+from django.utils.timezone import datetime, now
 
 from app.settings import EMAIL_HOST_USER
-
 from menu.models import Dish
 
 

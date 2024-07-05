@@ -15,9 +15,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from menu.models import Dish
-
 from menu.serializers import DishSerializer
-
 from menu.tests.creates import create_dish
 
 DISHES_URL = reverse('menu:dish-list')

@@ -3,10 +3,7 @@ Serializers for menu API.
 """
 from rest_framework import serializers
 
-from menu.models import (
-    Menu,
-    Dish,
-)
+from menu.models import Menu, Dish
 
 
 class DishSerializer(serializers.ModelSerializer):

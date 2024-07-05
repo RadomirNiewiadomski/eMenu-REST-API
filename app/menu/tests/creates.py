@@ -1,9 +1,9 @@
+"""
+Creates functions to import.
+"""
 from decimal import Decimal
 
-from menu.models import (
-    Menu,
-    Dish,
-)
+from menu.models import Menu, Dish
 
 
 def create_menu(**params):

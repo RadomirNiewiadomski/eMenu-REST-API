@@ -1,17 +1,10 @@
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase, APIClient
 
 from django.urls import reverse
 from django.utils.timezone import now, timedelta
 
-
-from rest_framework.test import APITestCase
-
 from menu.serializers import MenuSerializer
-
-from menu.tests.creates import (
-    create_dish,
-    create_menu
-)
+from menu.tests.creates import create_dish, create_menu
 
 MENU_URL = reverse('menu:menu-list')
 
